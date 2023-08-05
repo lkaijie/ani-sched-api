@@ -123,15 +123,19 @@ class AniSched(_Base):
                 return _extract(self, entries)
     
     def get_news(self) -> None:
-        """Returns a list of dicts containing the entries of the feed
+        """Returns a list of dicts containing the news entries of the feed
         """
         print("Getting news...")
-        entries = self._parse_feed(self.url)
+        entries = self._parse_feed(self.headline_url)
         return entries
+    
     
     def get_recently_aired(self) -> None:
         """Returns a list of dicts containing the recently aired anime
         """
+        print("Getting recently aired...")
+        entries = self._parse_feed(self.recently_aired_url)
+        return entries
         pass
     
 if __name__ == "__main__":
