@@ -20,13 +20,11 @@ soup = BeautifulSoup(response.page_source, "html.parser")
 animes = {}
 
 for x in soup.find_all("div", class_="anime-card"):
-    # print(x)
     title = x.find("a", attrs={"data-anime-card-target":"mainTitle"}).text
     tags = []
     for y in x.find_all("ol", class_="anime-tags"):
         for a in y.find_all("a"):
             tags.append(a.text)      
-    # studio = x.find("a", attrs={"data-anime-card-target":"studio"}).text
     img_url = x.find("img", attrs={"data-anime-card-target":"poster"})["src"]
     try:
         rating = x.find("div", class_="anime-avg-user-rating").text
@@ -45,6 +43,7 @@ for x in soup.find_all("div", class_="anime-card"):
             source = "Unknown"
             episodes = "Unknown"
     summary = x.find("div", class_="anime-synopsis").text
+    # remove or add note section
     links = []
     for y in x.find_all("ul", class_="related-links"):
         for a in y.find_all("a"):

@@ -5,3 +5,6 @@ HEADLINE_ENDPOINT = 'https://www.livechart.me/feeds/headlines'
 RECENTLY_AIRED_ENDPOINT = 'https://www.livechart.me/feeds/episodes'
 
 LC_ENDPOINT = "https://www.livechart.me/"
+
+
+QUERY = "?titles=english"

@@ -47,6 +47,16 @@ class _Base:
         entries = feed.entries
         return entries
         
-                
+    def _get_redirect(self, url: str) -> str:
+        """Returns the redirected url
+
+        Args:
+            url (str): url to redirect
+
+        Returns:
+            str: redirected url
+        """
+        response = requests.get(url, timeout=self.timeout)
+        return response.url
     
-        
+    
