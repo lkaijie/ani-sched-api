@@ -12,13 +12,15 @@ class AniSched(_Base):
         self.recently_aired_url = config.RECENTLY_AIRED_ENDPOINT
         self.lc_url = config.LC_ENDPOINT
         self.get_redirect(self.lc_url)
-        
+        self.search_url = config.SEARCH_ENDPOINT
+        # self.endpoint = config.LC_ENDPOINT
+        #unused
     def get_redirect(self, url: str) -> str:
         # prob can be removed at some point
         url = self._get_redirect(url)
         self.lc_url2 = url+config.QUERY
 
-    def get_sched(self, season=None, year=None) -> None:
+    def get_sched(self, season=None, year=None):
         """Returns a dict of dicts containing the seasonal anime schedule
         """
         def _get_current_season(self) -> str:
@@ -71,15 +73,7 @@ class AniSched(_Base):
                         source = y.text
                     elif y.get("class") == ["anime-episodes"]:
                         episodes = y.text
-                
-                # anime_metadata = x.find("div", class_="anime-metadata")
-                # if anime_metadata:
-                #     for z in anime_metadata.find_all("div"):
-                #         if z.get("class") == ["anime-source"]:
-                #             source = z.text
-                #         elif z.get("class") == ["anime-episodes"]:
-                #             episodes = z.text
-
+            
                 summary = x.find("div", class_="anime-synopsis").text
                 # remove or add note section
                 links = []
@@ -135,7 +129,71 @@ class AniSched(_Base):
         entries = self._parse_feed(self.recently_aired_url)
         return entries
         
-    
+    def search_anime(self, query: str) -> List:
+        """Returns a list of the first 5 search results
+
+        Args:
+            query (str): The search query
+
+        Returns:
+            List: returns a list in the format of [title, url]
+        """
+        def _extract_search_results(entries):
+            url_list = []
+            number_of_results = 5
+            for x in entries.find_all("li", class_="grouped-list-item anime-item")[:number_of_results]:
+                title = x.find("a").text
+                url = self.lc_url+x.find("a")["href"][1:]
+                url_list.append([title, url])
+            return url_list
+        
+        url = f"{self.lc_url}search?q={query}"
+        entries = self._parse_url(url, type="selenium")
+        return _extract_search_results(entries)
+        
+    def extract_link(self, url: str) -> Dict:
+        
+        """Returns a dict containing the anime info
+
+        Args:
+            url (str): The url of the anime
+            # https://www.livechart.me/anime/10424
+
+        Returns:
+            dict: returns a dict containing the anime info
+        """
+        # title, tags, img_url, rating, studio, date, source, episodes, summary, links
+        entries = self._parse_url(url, type="selenium")
+        title = entries.find("span", class_="text-base-content").text
+        tags = []
+        for x in entries.find_all("a", class_="lc-chip-button", attrs={"data-anime-details-target":"tagChip"}):
+            tags.append(x.text)
+        img_url = entries.find("img", class_="overflow-hidden rounded w-24 xs:w-40")["src"]
+        rating = entries.find("span", class_="text-lg font-bold").text
+        studio = entries.find("a", class_="lc-chip-button").text
+        source = entries.find("div", class_="whitespace-nowrap text-ellipsis overflow-hidden").text
+        try:
+            episodes = entries.find("div", attrs={"data-action":"click->anime-details#openListEditor"}).text
+        except:
+            episodes = "Unknown"
+        summary = entries.find("div", class_="lc-expander-content lc-markdown-html cursor-pointer select-none").text
+        links = []
+        x = entries.find_all("div", class_="grid grid-cols-2 md:grid-cols-3 gap-4")
+        for a in x[0].find_all("a"):
+            links.append(a["href"])
+        info = {
+            "title": title,
+            "tags": tags,
+            "img_url": img_url,
+            "rating": rating,
+            "studio": studio,
+            "source": source,
+            "episodes": episodes,
+            "summary": summary,
+            "links": links
+        }
+        return info
+
 if __name__ == "__main__":
     anisched = AniSched()
     anisched.get_sched("summer", 2021)

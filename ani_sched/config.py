@@ -8,3 +8,7 @@ LC_ENDPOINT = "https://www.livechart.me/"
 
 
 QUERY = "?titles=english"
+
+# SEARCH
+
+SEARCH_ENDPOINT = 'https://www.livechart.me/search'
