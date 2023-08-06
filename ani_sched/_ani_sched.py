@@ -102,7 +102,6 @@ class AniSched(_Base):
                 animes[title] = info
             return animes  
         
-        
         if not season:
             season = _get_current_season(self)
             # example url: https://www.livechart.me/winter-2021/tv
@@ -129,14 +128,13 @@ class AniSched(_Base):
         entries = self._parse_feed(self.headline_url)
         return entries
     
-    
     def get_recently_aired(self) -> None:
         """Returns a list of dicts containing the recently aired anime
         """
         print("Getting recently aired...")
         entries = self._parse_feed(self.recently_aired_url)
         return entries
-        pass
+        
     
 if __name__ == "__main__":
     anisched = AniSched()
