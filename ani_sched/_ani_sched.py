@@ -152,12 +152,10 @@ class AniSched(_Base):
         return _extract_search_results(entries)
         
     def extract_link(self, url: str) -> Dict:
-        
         """Returns a dict containing the anime info
 
         Args:
             url (str): The url of the anime
-            # https://www.livechart.me/anime/10424
 
         Returns:
             dict: returns a dict containing the anime info
@@ -170,7 +168,12 @@ class AniSched(_Base):
             tags.append(x.text)
         img_url = entries.find("img", class_="overflow-hidden rounded w-24 xs:w-40")["src"]
         rating = entries.find("span", class_="text-lg font-bold").text
-        studio = entries.find("a", class_="lc-chip-button").text
+        studio = []
+        x = entries.find("div", class_="flex flex-wrap gap-2")
+        for a in x.find_all("a"):
+            studio.append(a.text)
+            
+        # studio = entries.find("a", class_="lc-chip-button").text
         source = entries.find("div", class_="whitespace-nowrap text-ellipsis overflow-hidden").text
         try:
             episodes = entries.find("div", attrs={"data-action":"click->anime-details#openListEditor"}).text

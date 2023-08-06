@@ -24,6 +24,7 @@ class _Base:
             # use requests
             response = requests.get(url, timeout=self.timeout)
             soup = BeautifulSoup(response.text, "html.parser", from_encoding="utf-8")
+            # soup = BeautifulSoup(response.text, "html.parser")
             return soup
         
         elif type == "selenium":
@@ -33,7 +34,8 @@ class _Base:
             options.add_argument('--headless=new')    
             response = webdriver.Chrome(options=options)
             response.get(url)
-            soup = BeautifulSoup(response.page_source, "html.parser", from_encoding="utf-8")
+            # soup = BeautifulSoup(response.page_source, "html.parser", from_encoding="utf-8")
+            soup = BeautifulSoup(response.page_source, "html.parser")
             return soup
         
     
