@@ -23,7 +23,8 @@ from ani_sched import *
 ## Example
 
 To call the API, you need to create an object.
-```
+    
+```python
 from ani_sched import AniSched
 
 api = AniSched()
