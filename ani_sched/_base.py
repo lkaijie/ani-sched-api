@@ -23,8 +23,8 @@ class _Base:
         if type == "normal" or type == None:
             # use requests
             response = requests.get(url, timeout=self.timeout)
-            soup = BeautifulSoup(response.text, "html.parser", from_encoding="utf-8")
-            # soup = BeautifulSoup(response.text, "html.parser")
+            # soup = BeautifulSoup(response.text, "html.parser", from_encoding="utf-8")
+            soup = BeautifulSoup(response.text, "html.parser")
             return soup
         
         elif type == "selenium":
