@@ -1,7 +1,7 @@
 # Python Anime Schedule API
 
 
-[![pypi Version](https://img.shields.io/pypi/v/mal-api.svg?color=informational)](https://pypi.org/project/mal-api/)
+[![pypi Version](https://img.shields.io/pypi/v/ani-sched.svg?color=informational)](https://pypi.org/project/ani-sched/)
 
 A lightweight API for gathering anime schedules from [MyAnimeList](https://myanimelist.net) or anime news and announcements from [LiveChart](https://livechart.me).
 
