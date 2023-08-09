@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ani-sched",
-    version="0.1.1",
+    version="0.1.2",
     description="A local MAL API for anime schedules and news (using livechart.me)",
     license="MIT",
     long_description=long_description,
@@ -14,7 +14,7 @@ setuptools.setup(
     author_email="",
     url="https://github.com/lkaijie/ani-sched-api",
     packages=setuptools.find_packages(),
-    install_requires=["requests", "beautifulsoup4","selenium","feedparser"],
+    install_requires=["requests", "beautifulsoup4","feedparser"],
     keywords=["api", "myanimelist", "anime", "schedule", "news", "livechart"],
     classifiers=[
         "Programming Language :: Python :: 3",
