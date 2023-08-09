@@ -1,7 +1,7 @@
 import feedparser
 import json
 import requests
-from selenium import webdriver
+# from selenium import webdriver
 from bs4 import BeautifulSoup
 
 
@@ -21,22 +21,19 @@ class _Base:
             soup: BeautifulSoup object of the url
         """
         if type == "normal" or type == None:
-            # use requests
             response = requests.get(url, timeout=self.timeout)
-            # soup = BeautifulSoup(response.text, "html.parser", from_encoding="utf-8")
             soup = BeautifulSoup(response.text, "html.parser")
             return soup
         
         elif type == "selenium":
-            # use selenium
-            options = webdriver.ChromeOptions()
-            options.add_argument('--ignore-certificate-errors')
-            options.add_argument('--headless=new')    
-            response = webdriver.Chrome(options=options)
-            response.get(url)
-            # soup = BeautifulSoup(response.page_source, "html.parser", from_encoding="utf-8")
-            soup = BeautifulSoup(response.page_source, "html.parser")
-            return soup
+            # options = webdriver.ChromeOptions()
+            # options.add_argument('--ignore-certificate-errors')
+            # options.add_argument('--headless=new')    
+            # response = webdriver.Chrome(options=options)
+            # response.get(url)
+            # soup = BeautifulSoup(response.page_source, "html.parser")
+            # return soup
+            pass
         
     
     def _parse_feed(self, url: str) -> None:
@@ -50,7 +47,7 @@ class _Base:
         return entries
         
     def _get_redirect(self, url: str) -> str:
-        """Returns the redirected url
+        """Returns the red irected url
 
         Args:
             url (str): url to redirect

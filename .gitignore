@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 
 ignore
+version-0.1.0
+
 # C extensions
 *.so
 

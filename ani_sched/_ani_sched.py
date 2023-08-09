@@ -7,21 +7,18 @@ import re
 
 class AniSched(_Base):
     """AniSched class, used to get anime schedules from MyAnimeList
-    
+
     Methods:
         get_sched(season=None, year=None)
         
         get_news()
         
         get_recently_aired()
-        
-        
     Args:
         timeout (int, optional): Timeout for the requests. Defaults to config.TIMEOUT.
     """
     def __init__(self, timeout: int = config.TIMEOUT) -> None:
         super().__init__(timeout)
-        # keep these 2 lines (get news and get recently aired)
         self.headline_url = config.HEADLINE_ENDPOINT
         self.recently_aired_url = config.RECENTLY_AIRED_ENDPOINT
 
@@ -29,17 +26,34 @@ class AniSched(_Base):
         self.search_url = config.MAL_SEARCH_ENDPOINT
 
 
-    def get_sched(self, season=None, year=None):
-        """Returns a dict of dicts containing the seasonal anime schedule
+    def get_sched(self, season=None, year=None)-> Dict[str, List[Dict]]:
+        """Extracts and returns the schedule from MyAnimeList
+
+        Args:
+            season (str, optional): season of anime. Defaults to None.
+            year (int, optional): year of season. Defaults to None.
+
+        Returns:
+            Dict[str, List[Dict]]: Dict of lists of dicts containing the schedule
+            
+        Example:
+            {"TV (New)": [{"title": "Bocchi the Rock!",...}]}
         """
 
-        def _extract_schedule(soup):
+        def _extract_schedule(soup) -> List[Dict]:
+            """Extracts the schedule from the soup object
+
+            Args:
+                soup (BeautifulSoup4 Object): BeautifulSoup4 object of the schedule page ex. https://myanimelist.net/anime/season
+
+            Returns:
+                list: List of dicts containing animes in the schedule
+            """
             animes = {}
             
             def extract_anime_type(soup):
                 animes = []
                 # js-anime-category-producer seasonal-anime
-                
                 for x in soup.find_all("div", class_=re.compile(r'\bjs-anime-category-producer\b.*\bseasonal-anime\b')):
                     title = x.find("a", class_="link-title").text
                     try:
@@ -48,10 +62,8 @@ class AniSched(_Base):
                         title_eng = title
                     rating = x.find("div", attrs={"title":"Score"}).text.replace("\n", "").strip()
                     try:
-                        # img_url = x.find("img")["src"]
                         img_url = x.find("img")["data-src"]
                     except:
-                        # img_url = None       
                         img_url = x.find("img")["src"]
 
                     members = x.find("div", attrs={"title":"Members"}).text.replace("\n", "").strip()
@@ -63,7 +75,6 @@ class AniSched(_Base):
                     properties = properties.find_all("div")
                     for u in properties[0].find_all("span", class_ = "item"):
                         studio.append(u.text)
-                    # studio.append(properties[0].find("span", class_ = "item").text)
                     source = properties[1].find("span", class_ = "item").text
                     summary = x.find("p", class_ = "preline").text.replace("\n", "").replace("\r", "").strip()
                     link = x.find("a", class_ = "link-title")["href"]
@@ -88,61 +99,7 @@ class AniSched(_Base):
                         "link": link
                     }
                     animes.append(anime_info)
-                # return animes
                 return animes
-            def old():
-                for x in soup.find_all("div"):
-                    # print(x)
-                    try:
-                        title = x.find("a", class_ = "link-title").text
-                        try:
-                            title_eng = x.find("a", class_ = "h3_anime_subtitle").text
-                        except:
-                            print("no title_eng")
-                            title_eng = title
-                            pass
-                        print(title_eng)
-                        print(title)
-                        break
-                        # img_url = x.find("img")["src"]
-                        # rating = x.find("div", attrs={"title":"Score"}).text
-                        # print(rating)
-                        # members = x.find("div", attrs={"title":"Members"}).text
-                        # print(members)
-                        tags = []
-                        # for y in x.find_all("span", class_ = "genre"):
-                            # tags.append(y.text)
-                        # print(tags)
-                        studio = []
-                        properties = x.find("div", class_ = "properties")
-                        # studio.append(properties[0].text)
-                        # print(studio)
-                        # source = properties[1].text
-                        # print(source)
-                        # summary = x.find("p", class_ = "preline").text
-                        # link = x.find("a", class_ = "link-title")["href"]
-                        
-                        # info = {
-                        #     "title": title,
-                        #     "title_eng": title_eng,
-                        #     "img_url": img_url,
-                        #     "rating": rating,
-                        #     "members": members,
-                        #     "tags": tags,
-                        #     "studio": studio,
-                        #     "source": source,
-                        #     "summary": summary,
-                        #     "link": link
-                        # }
-                        # return info
-                        # animes[title_eng] = info
-                    except Exception as e:
-                        print(e)
-                        print("error 2")
-                        pass
-                print(animes)
-                return animes
-                pass
             
             new_soup = soup.find("div", class_="js-categories-seasonal")
             for type_of_anime in new_soup.find_all("div", class_=re.compile(r'\bseasonal-anime-list\b.*\bjs-seasonal-anime-list\b')):
@@ -169,11 +126,9 @@ class AniSched(_Base):
                     case _:
                         continue
             return animes
-
-            
-        if not season:
+   
+        if not season: # if no season is provided, get the current season
             entries = self._parse_url(self.mal_url)
-            print(self.mal_url)
             return _extract_schedule(entries)
         else:
             if not season and not year:
@@ -182,16 +137,8 @@ class AniSched(_Base):
                 raise ValueError("Season must be one of the following: winter, spring, summer, fall")
             else:
                 endpoint = f"{self.mal_url}/{year}/{season}"
-                print(endpoint)
                 return _extract_schedule(self._parse_url(endpoint))
                 
-                
-                # # example url: https://www.livechart.me/summer-2021/tv
-                # endpoint = f"{self.lc_url}{season}-{year}/tv?titles=english"
-                # print(endpoint)
-                # entries = self._parse_url(endpoint, type="selenium")
-                # return _extract(self, entries)
-    
     def get_news(self) -> None:
         """Returns a list of dicts containing the news entries of the feed
         """
