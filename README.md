@@ -1,7 +1,23 @@
+<!-- 
+<div>
+![Tests](https://github.com/lkaijie/ani-sched-api/workflows/PyTests/badge.svg "CI build status: Check JSON files")
+[![Downloads](https://pepy.tech/badge/ani-sched/month)](https://pepy.tech/project/ani-sched)
+</div> -->
+<div align="center" style="margin-bottom:20px">
+    <span style="margin-right:10px">
+        <img src="https://github.com/lkaijie/ani-sched-api/workflows/PyTests/badge.svg" alt="Tests">
+    </span>
+    <span style="margin-left:10px">
+        <a href="https://pepy.tech/badge/ani-sched">
+            <img src="https://pepy.tech/badge/ani-sched/month" alt="Downloads">
+        </a>
+    </span>
+
+
+</div>
+
 # Python Anime Schedule API
-
-
-[![pypi Version](https://img.shields.io/pypi/v/ani-sched.svg?color=informational)](https://pypi.org/project/ani-sched/)
+[![Version](https://img.shields.io/pypi/v/ani-sched.svg?color=informational)](https://pypi.org/project/ani-sched/)
 
 A lightweight API for gathering anime schedules from [MyAnimeList](https://myanimelist.net) or anime news and announcements from [LiveChart](https://livechart.me).
 
