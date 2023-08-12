@@ -171,11 +171,92 @@ class AniSched(_Base):
         for x in results[:5]:
             title = x.find("a", class_="hoverinfo_trigger fw-b fl-l").text
             url = x.find("a", class_="hoverinfo_trigger fw-b fl-l")["href"]
-            print(title, url)
-            # search_results.append([title, url])
+            # print(title, url)
+            search_results.append([title, url])
         return search_results
    
-    def extract_search_link()
+    def extract_search_link(self, url:str) -> Dict:
+        # https://myanimelist.net/anime/47917/Bocchi_the_Rock
+        """Returns a dict containing anime info from link
+
+        Args:
+            url (str): url of anime(MAL)
+
+        Returns:
+            Dict: information regarding anime
+        """
+        entries = self._parse_url(url)
+        title = entries.find("h1", class_="title-name h1_bold_none").text
+        try:
+            title_eng = entries.find("h1", class_="title-english title-inherit").text
+        except:
+            title_eng = title
+        rating = entries.find("div",class_=re.compile(r'\bscore-label\b')).text
+        # rating = "test"
+        try: 
+            img_url = entries.find("img", class_="lazyloaded").attrs["src"]
+        except:
+            img_url = entries.find("img", class_="lazyloaded").attrs["data-src"]
+        members = entries.find("div", class_="fl-l score").attrs["data-user"].replace("\n", "").strip()
+        tags = entries.find_all("span", attrs={"itemprop":"genre"})
+        tags = [x.text for x in tags]
+        information_section = entries.find_all("div", class_="spaceit_pad")\
+        
+        for x in information_section:
+            if "Episodes:" in x.text:
+                episodes = x.text.replace("\n", "").replace("Episodes:", "").strip()
+            elif "Aired:" in x.text:
+                start_date = x.text.replace("\n", "").replace("Aired:", "").strip()
+            elif "Premiered:" in x.text:
+                season = x.text.replace("\n", "").replace("Premiered:", "").strip()
+            elif "Studios:" in x.text:
+                studio = x.text.replace("\n", "").replace("Studios:", "").strip()
+            elif "Source:" in x.text:
+                source = x.text.replace("\n", "").replace("Source:", "").strip()
+        # episodes = information_section[6].text.replace("\n", "").strip()
+        # start_date = information_section[8].text.replace("\n", "").strip()
+        # season = information_section[9].text.replace("\n", "").strip()
+        # studio = information_section[13].text.replace("\n", "").strip()
+        # source = information_section[14].text.replace("\n", "").strip()
+        
+        
+        summary = entries.find("p", attrs={"itemprop":"description"}).text.replace("\n", "").strip()
+        link = url
+        
+        anime_info = {
+            "title": title,
+            "title_eng": title_eng,
+            "rating": rating,
+            "img_url": img_url,
+            "members": members,
+            "tags": tags,
+            "studio": studio,
+            "source": source,
+            "summary": summary,
+            "episodes": episodes,
+            "start_date": start_date,
+            "link": link,
+            "season": season
+        }
+        
+        return anime_info
+        
+        
+        # anime_info = {
+        #             "title": title,
+        #             "title_eng": title_eng,
+        #             "rating": rating,
+        #             "img_url": img_url,
+        #             "members": members,
+        #             "tags": tags,
+        #             "studio": studio,
+        #             "source": source,
+        #             "summary": summary,
+        #             "episodes": episodes,
+        #             "start_date": start_date,
+        #             "link": link
+        #         }
+        
         
     # # def extract_link(self, url: str) -> Dict:
     #     """Returns a dict containing the anime info
