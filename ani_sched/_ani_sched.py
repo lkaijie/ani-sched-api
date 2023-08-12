@@ -151,27 +151,31 @@ class AniSched(_Base):
         entries = self._parse_feed(self.recently_aired_url)
         return entries
         
-    # # def search_anime(self, query: str) -> List:
-    #     """Returns a list of the first 5 search results
+    def search_anime(self, query:str) -> List:
+        """Returns a list of the first 5 search results
 
-    #     Args:
-    #         query (str): The search query
+        Args:
+            query (str): The search query
 
-    #     Returns:
-    #         List: returns a list in the format of [title, url]
-    #     """
-    #     def _extract_search_results(entries):
-    #         url_list = []
-    #         number_of_results = 5
-    #         for x in entries.find_all("li", class_="grouped-list-item anime-item")[:number_of_results]:
-    #             title = x.find("a").text
-    #             url = self.lc_url+x.find("a")["href"][1:]
-    #             url_list.append([title, url])
-    #         return url_list
+        Returns:
+            List: returns a list in the format of [title, url]
+        """
+        # MAL_SEARCH_ENDPOINT = 'https://myanimelist.net/search/all'
+        query = query.replace(" ", "%20")
+        category = "all"
+        url = f"{self.search_url}?cat={category}&q={query}"
+        entries = self._parse_url(url)
         
-    #     url = f"{self.lc_url}search?q={query}"
-    #     entries = self._parse_url(url, type="selenium")
-    #     return _extract_search_results(entries)
+        results = entries.find_all("div", class_="list di-t w100")
+        search_results = []
+        for x in results[:5]:
+            title = x.find("a", class_="hoverinfo_trigger fw-b fl-l").text
+            url = x.find("a", class_="hoverinfo_trigger fw-b fl-l")["href"]
+            print(title, url)
+            # search_results.append([title, url])
+        return search_results
+   
+    def extract_search_link()
         
     # # def extract_link(self, url: str) -> Dict:
     #     """Returns a dict containing the anime info
