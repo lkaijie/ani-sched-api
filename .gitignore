@@ -5,6 +5,8 @@ __pycache__/
 
 ignore
 version-0.1.0
+testing.py
+test.json
 
 # C extensions
 *.so

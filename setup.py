@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ani-sched",
-    version="0.1.2",
+    version="0.1.3",
     description="A local MAL API for anime schedules and news (using livechart.me)",
     license="MIT",
     long_description=long_description,
@@ -21,5 +21,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.10",
 )
