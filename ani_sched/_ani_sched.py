@@ -160,7 +160,6 @@ class AniSched(_Base):
         Returns:
             List: returns a list in the format of [title, url]
         """
-        # MAL_SEARCH_ENDPOINT = 'https://myanimelist.net/search/all'
         query = query.replace(" ", "%20")
         category = "all"
         url = f"{self.search_url}?cat={category}&q={query}"
@@ -171,7 +170,6 @@ class AniSched(_Base):
         for x in results[:5]:
             title = x.find("a", class_="hoverinfo_trigger fw-b fl-l").text
             url = x.find("a", class_="hoverinfo_trigger fw-b fl-l")["href"]
-            # print(title, url)
             search_results.append([title, url])
         return search_results
    
@@ -185,6 +183,7 @@ class AniSched(_Base):
         Returns:
             Dict: information regarding anime
         """
+        
         entries = self._parse_url(url)
         title = entries.find("h1", class_="title-name h1_bold_none").text
         try:
@@ -192,7 +191,6 @@ class AniSched(_Base):
         except:
             title_eng = title
         rating = entries.find("div",class_=re.compile(r'\bscore-label\b')).text
-        # rating = "test"
         try: 
             img_url = entries.find("img", class_="lazyloaded").attrs["src"]
         except:
@@ -212,14 +210,7 @@ class AniSched(_Base):
             elif "Studios:" in x.text:
                 studio = x.text.replace("\n", "").replace("Studios:", "").strip()
             elif "Source:" in x.text:
-                source = x.text.replace("\n", "").replace("Source:", "").strip()
-        # episodes = information_section[6].text.replace("\n", "").strip()
-        # start_date = information_section[8].text.replace("\n", "").strip()
-        # season = information_section[9].text.replace("\n", "").strip()
-        # studio = information_section[13].text.replace("\n", "").strip()
-        # source = information_section[14].text.replace("\n", "").strip()
-        
-        
+                source = x.text.replace("\n", "").replace("Source:", "").strip()        
         summary = entries.find("p", attrs={"itemprop":"description"}).text.replace("\n", "").strip()
         link = url
         
@@ -240,67 +231,3 @@ class AniSched(_Base):
         }
         
         return anime_info
-        
-        
-        # anime_info = {
-        #             "title": title,
-        #             "title_eng": title_eng,
-        #             "rating": rating,
-        #             "img_url": img_url,
-        #             "members": members,
-        #             "tags": tags,
-        #             "studio": studio,
-        #             "source": source,
-        #             "summary": summary,
-        #             "episodes": episodes,
-        #             "start_date": start_date,
-        #             "link": link
-        #         }
-        
-        
-    # # def extract_link(self, url: str) -> Dict:
-    #     """Returns a dict containing the anime info
-
-    #     Args:
-    #         url (str): The url of the anime
-
-    #     Returns:
-    #         dict: returns a dict containing the anime info
-    #     """
-    #     # title, tags, img_url, rating, studio, date, source, episodes, summary, links
-    #     entries = self._parse_url(url, type="selenium")
-    #     title = entries.find("span", class_="text-base-content").text
-    #     tags = []
-    #     for x in entries.find_all("a", class_="lc-chip-button", attrs={"data-anime-details-target":"tagChip"}):
-    #         tags.append(x.text)
-    #     img_url = entries.find("img", class_="overflow-hidden rounded w-24 xs:w-40")["src"]
-    #     rating = entries.find("span", class_="text-lg font-bold").text
-    #     studio = []
-    #     x = entries.find("div", class_="flex flex-wrap gap-2")
-    #     for a in x.find_all("a"):
-    #         studio.append(a.text)
-            
-    #     # studio = entries.find("a", class_="lc-chip-button").text
-    #     source = entries.find("div", class_="whitespace-nowrap text-ellipsis overflow-hidden").text
-    #     try:
-    #         episodes = entries.find("div", attrs={"data-action":"click->anime-details#openListEditor"}).text
-    #     except:
-    #         episodes = "Unknown"
-    #     summary = entries.find("div", class_="lc-expander-content lc-markdown-html cursor-pointer select-none").text
-    #     links = []
-    #     x = entries.find_all("div", class_="grid grid-cols-2 md:grid-cols-3 gap-4")
-    #     for a in x[0].find_all("a"):
-    #         links.append(a["href"])
-    #     info = {
-    #         "title": title,
-    #         "tags": tags,
-    #         "img_url": img_url,
-    #         "rating": rating,
-    #         "studio": studio,
-    #         "source": source,
-    #         "episodes": episodes,
-    #         "summary": summary,
-    #         "links": links
-    #     }
-    #     return info
-

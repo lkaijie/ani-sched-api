@@ -26,13 +26,6 @@ class _Base:
             return soup
         
         elif type == "selenium":
-            # options = webdriver.ChromeOptions()
-            # options.add_argument('--ignore-certificate-errors')
-            # options.add_argument('--headless=new')    
-            # response = webdriver.Chrome(options=options)
-            # response.get(url)
-            # soup = BeautifulSoup(response.page_source, "html.parser")
-            # return soup
             pass
         
     
