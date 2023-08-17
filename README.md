@@ -9,7 +9,7 @@
     </span>
     <span style="margin-left:10px">
         <a href="https://pepy.tech/badge/ani-sched">
-            <img src="https://pepy.tech/badge/ani-sched/month" alt="Downloads">
+            <img src="https://static.pepy.tech/badge/ani-sched/month" alt="Downloads">
         </a>
     </span>
 
