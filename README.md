@@ -8,7 +8,7 @@
         <img src="https://github.com/lkaijie/ani-sched-api/workflows/PyTests/badge.svg" alt="Tests">
     </span>
     <span style="margin-left:10px">
-        <a href="https://pepy.tech/badge/ani-sched">
+        <a href="https://pepy.tech/projects/ani-sched">
             <img src="https://static.pepy.tech/badge/ani-sched/month" alt="Downloads">
         </a>
     </span>
