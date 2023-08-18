@@ -158,7 +158,7 @@ class AniSched(_Base):
             query (str): The search query
 
         Returns:
-            List: returns a list in the format of [title, url]
+            List: returns a list with elements in the format of [title, url]
         """
         query = query.replace(" ", "%20")
         category = "all"
@@ -208,7 +208,7 @@ class AniSched(_Base):
             elif "Premiered:" in x.text:
                 season = x.text.replace("\n", "").replace("Premiered:", "").strip()
             elif "Studios:" in x.text:
-                studio = x.text.replace("\n", "").replace("Studios:", "").strip()
+                studio = x.text.replace("\n", "").replace("Studios:", "").replace("      ","").strip()
             elif "Source:" in x.text:
                 source = x.text.replace("\n", "").replace("Source:", "").strip()        
         summary = entries.find("p", attrs={"itemprop":"description"}).text.replace("\n", "").strip()
