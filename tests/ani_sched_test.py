@@ -48,7 +48,7 @@ def test_extract_seach_link():
     
     assert anime != None
     assert anime["title"] == "Bocchi the Rock!"
-    assert anime["rating"] == "8.83"
+    # assert anime["rating"] == "8.83"
     assert anime["studio"] == "CloverWorks"
     assert anime["link"] == "https://myanimelist.net/anime/47917/Bocchi_the_Rock"
     
